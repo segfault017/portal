@@ -1,5 +1,7 @@
 FROM archlinux:latest
 
+ARG VNC_PWD
+
 # Install packages
 RUN pacman -Sy --noconfirm \
 	alacritty \
@@ -35,27 +37,11 @@ RUN pacman -Sy --noconfirm \
 	zsh \
     && pacman -Scc --noconfirm	
 
-
-# TODO handle ssh keys
-
-
-# TODO clone gitrepos 
-
-
-# TODO handle dotfiles 
-
-
-# TODO bootstrap script
-
-
-# TODO install browser 		
-
-	
-# Copy wallpaper 
-COPY /pictures/magonia.jpg /pictures/magonia.jpg	
+# Run bootstrap script
+COPY /bin/bootstrap.sh /usr/local/bin/bootstrap.sh
+RUN chmod +x /usr/local/bin/bootstrap.sh	
 	
 # Create a vnc password and directory
-ARG VNC_PWD
 RUN mkdir -p ~/.vnc && \
     echo ${VNC_PWD} | vncpasswd -f > ~/.vnc/passwd && \
     chmod 600 ~/.vnc/passwd
@@ -64,5 +50,5 @@ RUN mkdir -p ~/.vnc && \
 COPY /bin/start-vnc.sh /usr/local/bin/start-vnc.sh
 RUN chmod +x /usr/local/bin/start-vnc.sh
 
-# Set default vnc script
+# Set default
 CMD ["/usr/local/bin/start-vnc.sh"]
