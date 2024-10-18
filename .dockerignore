@@ -1,0 +1,6 @@
+.dotfiles
+.dotfiles/**/*
+.vault
+.vault/**/*
+.gitattributes
+README.md
